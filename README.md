@@ -7,9 +7,9 @@ touch terraform.tfvars
 # edit terraform.tfvars
 ```
 
-An example contents of terraform.tfvars
-
 Generate an auth key from your Admin console https://login.tailscale.com/admin/settings/keys
+
+An example contents of terraform.tfvars
 ```
 aws_public_key_filename = "/home/user/.ssh/id_ed25519.pub"
 tailscale_authkey = "tskey-auth-kD6nkqZR6911CNTRL-qku1R68kqZ191jwCZjExample"
