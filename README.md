@@ -57,3 +57,8 @@ Please don't forget to destroy the instance after use.
 ```
 terraform destroy
 ```
+
+### Note
+The instance type `c6gn.medium` is recommended since it provides better baseline network bandwidth.
+
+See also https://fck-nat.dev/stable/choosing_an_instance_size/
