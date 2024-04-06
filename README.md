@@ -49,4 +49,9 @@ Open https://login.tailscale.com/admin/machines then find the instance. In Routi
 
 Install Tailscale client and specify to use the exit node in your tailnet.
 
-Well done.
+Well done!
+
+Please don't forget to destroy the instance after use.
+```
+terraform destroy
+```
