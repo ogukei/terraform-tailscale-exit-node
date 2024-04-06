@@ -1,3 +1,5 @@
+# Terraform Tailscale Exit Node
+Just `terraform apply` to spawn a Tailscale exit node on EC2 spot instance.
 
 ## Usage
 
