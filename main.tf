@@ -35,7 +35,7 @@ data "aws_ami" "ubuntu" {
 }
 
 data "template_file" "init" {
-  template = "${file("cloud-init.yaml.tpl")}"
+  template = "${file("cloud-init.tpl.yaml")}"
   vars = {
     tailscale_authkey = var.tailscale_authkey
   }
