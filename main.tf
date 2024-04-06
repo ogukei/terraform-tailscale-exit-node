@@ -34,6 +34,13 @@ data "aws_ami" "ubuntu" {
   }
 }
 
+data "template_file" "init" {
+  template = "${file("cloud-init.yaml.tpl")}"
+  vars = {
+    tailscale_authkey = var.tailscale_authkey
+  }
+}
+
 resource "aws_vpc" "default" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_hostnames = true
@@ -68,6 +75,15 @@ resource "aws_security_group_rule" "in_icmp" {
   protocol          = "icmp"
 }
 
+resource "aws_security_group_rule" "out_all" {
+  security_group_id = aws_security_group.default.id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 resource "aws_internet_gateway" "default" {
   vpc_id = aws_vpc.default.id
 }
@@ -99,7 +115,8 @@ resource "aws_spot_instance_request" "worker" {
   wait_for_fulfillment   = true
 
   security_groups = [aws_security_group.default.id]
-  subnet_id = aws_subnet.default.id
+  subnet_id       = aws_subnet.default.id
+  user_data       = data.template_file.init.rendered
 }
 
 resource "aws_eip" "default" {

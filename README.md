@@ -1,7 +1,7 @@
 
 ## Usage
 
-Specify your ssh public key filename in `terraform.tfvars`
+Specify your ssh public key filename and the Tailscale authkey in `terraform.tfvars`.
 ```
 touch terraform.tfvars
 # edit terraform.tfvars
@@ -10,6 +10,7 @@ touch terraform.tfvars
 An example contents of terraform.tfvars
 ```
 aws_public_key_filename = "/home/user/.ssh/id_ed25519.pub"
+tailscale_authkey = "tskey-auth-kD6nkqZR6911CNTRL-qku1R68kqZ191jwCZjExample"
 ```
 
 AWS credentials
@@ -34,12 +35,18 @@ Outputs:
 public_ip = "x.x.x.x"
 ```
 
-Ping it.
+Make sure that you can ping it.
 ```
 ping <public_ip>
 ```
 
-SSH into your instance.
+Also make sure that you can SSH into your instance.
 ```
-ssh ubuntu@<public_ip>
+ssh root@<public_ip>
 ```
+
+Open https://login.tailscale.com/admin/machines then find the instance. In Routing Settings, allow Exit Node.
+
+Install Tailscale client and specify to use the exit node in your tailnet.
+
+Well done.
