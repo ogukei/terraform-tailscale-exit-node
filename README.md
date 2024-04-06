@@ -4,7 +4,7 @@ Just `terraform apply` to spawn a Tailscale exit node on EC2 spot instance.
 ## Usage
 
 Specify your ssh public key filename and the Tailscale Auth Key in `terraform.tfvars`.
-```
+```sh
 touch terraform.tfvars
 # edit terraform.tfvars
 ```
@@ -18,14 +18,14 @@ tailscale_authkey = "tskey-auth-kD6nkqZR6911CNTRL-qku1R68kqZ191jwCZjExample"
 ```
 
 AWS credentials
-```
+```sh
 export AWS_ACCESS_KEY_ID=AKIAIOSFODNN7EXAMPLE
 export AWS_SECRET_ACCESS_KEY=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
 export AWS_DEFAULT_REGION=us-west-2
 ```
 
 Run terraform
-```
+```sh
 terraform init
 terraform apply
 ```
@@ -56,7 +56,7 @@ Install Tailscale client and specify to use the exit node in your tailnet.
 Make sure you have now access to the internet via Tailscale VPN with exit node.
 
 Please don't forget to destroy the instance after use.
-```
+```sh
 terraform destroy
 ```
 
