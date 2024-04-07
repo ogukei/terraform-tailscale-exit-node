@@ -78,10 +78,10 @@ resource "aws_security_group_rule" "in_icmp" {
 resource "aws_security_group_rule" "out_all" {
   security_group_id = aws_security_group.default.id
   type              = "egress"
+  cidr_blocks       = ["0.0.0.0/0"]
   from_port         = 0
   to_port           = 0
   protocol          = "-1"
-  cidr_blocks       = ["0.0.0.0/0"]
 }
 
 resource "aws_internet_gateway" "default" {
@@ -107,19 +107,23 @@ resource "aws_key_pair" "deployer" {
   public_key = "${file(var.aws_public_key_filename)}"
 }
 
-resource "aws_spot_instance_request" "worker" {
-  ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "c6gn.medium"
-  spot_type              = "persistent"
-  key_name               = "deployer-key"
-  wait_for_fulfillment   = true
-
-  security_groups = [aws_security_group.default.id]
-  subnet_id       = aws_subnet.default.id
-  user_data       = data.template_file.init.rendered
+resource "aws_instance" "worker" {
+  ami = data.aws_ami.ubuntu.id
+  instance_type = "c6gn.medium"
+  instance_market_options {
+    market_type = "spot"
+    spot_options {
+      spot_instance_type = "persistent"
+      instance_interruption_behavior = "stop"
+    }
+  }
+  key_name = aws_key_pair.deployer.key_name
+  vpc_security_group_ids = [aws_security_group.default.id]
+  subnet_id = aws_subnet.default.id
+  user_data = data.template_file.init.rendered
 }
 
 resource "aws_eip" "default" {
   domain = "vpc"
-  instance = aws_spot_instance_request.worker.spot_instance_id
+  instance = aws_instance.worker.id
 }
